@@ -1,6 +1,4 @@
 import moment from "moment";
-import "moment/locale/es";
-moment.locale("es");
 
 function SummaryCard({ day }) {
 	let day_icon = `${
@@ -9,7 +7,7 @@ function SummaryCard({ day }) {
 	return (
 		<li className="container p-4 flex items-center justify-center bg-gray-200 rounded-lg my-auto mr-1">
 			<div className="my-auto">
-				<p className="font-bold text-3xl text-pink-600 mb-2">
+				<p className="font-bold text-3xl text-pink-800 mb-2">
 					{Math.round(day.main.temp)}&deg;C
 				</p>
 				<p className="text-2xl text-gray-800 tracking-widest">

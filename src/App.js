@@ -5,10 +5,10 @@ import SummaryCard from "./components/SummaryCard";
 function App() {
 	const API_KEY = process.env.REACT_APP_API_KEY;
 
-	const [noData, setNoData] = useState("Realice una búsqueda ");
+	const [noData, setNoData] = useState("Select a city ");
 	const [searchTerm, setSearchTerm] = useState("");
 	const [weatherData, setWeatherData] = useState([]);
-	const [city, setCity] = useState("Desconocido");
+	const [city, setCity] = useState("Unknown");
 	const [weatherIcon, setWeatherIcon] = useState(
 		`${process.env.REACT_APP_ICON_URL}10n@2x.png`
 	);
@@ -22,7 +22,6 @@ function App() {
 		e.preventDefault();
 		getWeather(searchTerm);
 	};
-
 	const getWeather = async (location) => {
 		setWeatherData([]);
 		let how_to_search =
@@ -30,12 +29,12 @@ function App() {
 				? `q=${location}`
 				: `lat=${location[0]}&lon=${location[1]}`;
 
-		try {
-			const res = await fetch(`${process.env.REACT_APP_URL + how_to_search}
-      &appid=${API_KEY}&units=metric&lang=es&cnt=5&exclude=hourly,minutely`);
-			const data = await res.json();
+    try {
+			let res = await fetch(`${process.env.REACT_APP_URL + how_to_search}
+      &appid=${API_KEY}&units=metric&cnt=5&exclude=hourly,minutely`);
+			let data = await res.json();
 			if (data.cod != 200) {
-				setNoData("Lugar no encontrado");
+				setNoData("Location Not Found");
 				return;
 			}
 			setWeatherData(data);
@@ -46,7 +45,7 @@ function App() {
 				}@4x.png`
 			);
 		} catch (error) {
-			console.log(error);
+			alert(error);
 		}
 	};
 
@@ -56,16 +55,16 @@ function App() {
 	};
 
 	return (
-		<div className="container bg-gray-800 flex items-center justify-center w-screen h-screen py-10 overflow-auto">
-			<div className="flex w-3/4 min-h-full rounded-3xl shadow-lg m-auto bg-gray-100">
+		<div className="main container bg-gray-800 flex items-center justify-center w-screen h-screen py-10 overflow-auto">
+			<div className="wrapper  flex w-3/4 min-h-full rounded-3xl shadow-lg m-auto bg-gray-100">
 				{/* form card section  */}
-				<div className="form-container">
+				<div className="form-container ">
 					<div className="flex items-center justify-center">
 						<h3
 							className="my-auto mr-auto text-xl text-pink-800 font-bold shadow-md py-1 px-3 
             rounded-md bg-white bg-opacity-30"
 						>
-							Pronóstico
+							Forecast
 						</h3>
 						<div className="flex p-2 text-gray-100 bg-gray-600 bg-opacity-30 rounded-lg">
 							<i className="fa fa-map my-auto" aria-hidden="true"></i>
@@ -75,7 +74,7 @@ function App() {
 						</div>
 					</div>
 					<div className="flex flex-col items-center justify-center h-full">
-						<h1 className="text-white text-2xl">Clima en la Ciudad de</h1>
+						<h1 className="text-white text-2xl">Weather forecast in</h1>
 						<hr className="h-1 bg-white w-1/4 rounded-full my-5" />
 						<form
 							noValidate
@@ -84,7 +83,7 @@ function App() {
 						>
 							<input
 								type="text"
-								placeholder="Ingresa una ciudad"
+								placeholder="Type a city name"
 								className="relative rounded-xl py-2 px-3 w-2/3 bg-gray-300 bg-opacity-60 text-white placeholder-gray-200"
 								onChange={handleChange}
 								required
@@ -100,7 +99,7 @@ function App() {
 								className="fa fa-map-marker-alt my-auto cursor-pointer p-3 text-white"
 								aria-hidden="true"
 								onClick={() => {
-									navigator.geolocation.getCurrentPosition(myIP);
+									window.navigator.geolocation.getCurrentPosition(myIP);
 								}}
 							></i>
 						</form>
@@ -120,11 +119,11 @@ function App() {
 						) : (
 							<>
 								<h1 className="text-5xl text-gray-800 text-center mt-auto mb-4">
-									Ahora
+									Now
 								</h1>
 								<DetailCard weather_icon={weatherIcon} data={weatherData} />
 								<h1 className="text-3xl text-gray-600 text-center mb-4 mt-10">
-									Mas sobre {city}
+									More on {city}
 								</h1>
 								<ul className="grid grid-cols-2  gap-2">
 									{weatherData.list.map((days, index) => {
